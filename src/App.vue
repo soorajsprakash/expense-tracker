@@ -7,6 +7,8 @@
 				<Balance/>
 				<br>
 				<IncomeExpense/>
+				<br>
+				<TransactionList />
 			</div>
 		</v-main>
 	</v-layout>
@@ -16,4 +18,5 @@
 <script setup lang="ts">
 import Balance from './components/Balance.vue';
 import IncomeExpense from './components/IncomeExpense.vue';
+import TransactionList from './components/TransactionList.vue';
 </script>
