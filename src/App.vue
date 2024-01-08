@@ -8,13 +8,13 @@
 				<br>
 				<IncomeExpense :income="+income" :expenses="+expenses"/>
 				<br>
-				<TransactionList :transactions="transactions"/>
+				<TransactionList :transactions="transactions" @deleteTransaction="handleDeleteTransaction"/>
 				<br>
 				<AddTransaction @submitTansaction="handleNewTransaction"/>
 			</div>
 		</v-main>
 		<v-snackbar v-model="toast" timeout="2000" color="green">
-			Successfully added new transaction
+			{{ toastBody }}
 			<template v-slot:actions>
 				<v-btn variant="text" @click="toast = false">
 					x
@@ -48,6 +48,7 @@ const transactions = ref([
 ])
 
 const toast = ref(false)
+const toastBody = ref('')
 
 // get total balancec
 const total = computed(() => {
@@ -88,6 +89,14 @@ const handleNewTransaction = (newTransaction: Partial<TransactionType>) => {
 		text: newTransaction.text ?? "",
 		amount: newTransaction.amount ?? 0
 	})
+	toastBody.value = 'Successfully added new transaction'
+	toast.value = true
+}
+
+// handle delete transaction
+const handleDeleteTransaction = (id: number) => {
+	transactions.value = transactions.value.filter((each) => each.id !== id)
+	toastBody.value = 'Transaction deleted'
 	toast.value = true
 }
 </script>

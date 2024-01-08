@@ -6,7 +6,7 @@
 				:key="transaction.id">
 				<span class="ml-3">{{ transaction.text }}</span>
 				<span style="position: absolute; right: 5%;">{{ transaction.amount }}₹</span>
-				<button class="delete-btn">x</button>
+				<button @click="deleteTransaction(transaction.id)" class="delete-btn">x</button>
 			</v-list-item>
 		</v-list>
 	</v-card>
@@ -23,4 +23,10 @@ const props = defineProps({
 		required: true
 	}
 })
+
+const emit = defineEmits(['deleteTransaction'])
+
+const deleteTransaction = (id: number) => {
+	emit('deleteTransaction', id)
+}
 </script>
