@@ -15,8 +15,9 @@
                     <button class="delete-btn">x</button>
                 </li> -->
             <!-- </ul> -->
-            <v-list-item v-for="item, i in items" :class="item.class">
-                <span class="ml-3 justify-space-between">{{ item.text }}{{ item.value }}</span>
+            <v-list-item v-for="item, i in items" :class="item.class" class="d-flex justify-space-between">
+                <span class="ml-3">{{ item.text }}</span>
+                <span style="position: absolute; right: 5%;">{{ item.value }}</span>
                 <button class="delete-btn">x</button>
             </v-list-item>
         </v-list>
