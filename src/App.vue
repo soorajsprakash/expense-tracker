@@ -4,9 +4,9 @@
 
 		<v-main class="d-flex align-center justify-center" style="min-height: 300px;">
 			<div class="container">
-				<Balance />
+				<Balance :total="total"/>
 				<br>
-				<IncomeExpense />
+				<IncomeExpense :income="income" :expenses="expenses"/>
 				<br>
 				<TransactionList :transactions="transactions"/>
 				<br>
@@ -24,7 +24,7 @@ import TransactionList from './components/TransactionList.vue';
 import AddTransaction from './components/AddTransaction.vue';
 
 // wrap anything in "ref" to make it reactive
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 const transactions = ref([
 	{ id: 1, text: 'Cash', amount: -400 },
@@ -32,4 +32,32 @@ const transactions = ref([
 	{ id: 3, text: 'Food', amount: -370 },
 	{ id: 4, text: 'Auto', amount: -120 },
 ])
+
+// get total balancec
+const total = computed(() => {
+	return transactions.value.reduce((acc, transaction) => {
+		return acc + transaction.amount
+	}, 0)
+})
+
+// get income: toFixed will make it a string rather than a number
+const income = computed(() => {
+	return transactions.value
+		.filter((transaction) => transaction.amount > 0)
+		.reduce((acc, transaction) => {
+			return acc + transaction.amount
+		}, 0)
+		.toFixed(2)
+})
+
+// get expenses
+const expenses = computed(() => {
+	return transactions.value
+		.filter((transaction) => transaction.amount < 0)
+		.reduce((acc, transaction) => {
+			return acc + transaction.amount
+		}, 0)
+		.toFixed(2)
+})
+
 </script>

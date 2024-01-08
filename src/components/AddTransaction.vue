@@ -22,7 +22,7 @@
 				class="mt-4 btn"
 				block
 				rounded
-				@click="reset"
+				@click=""
 				>
 				Add Transaction
 				</v-btn>
