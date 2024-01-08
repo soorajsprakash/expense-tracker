@@ -32,7 +32,7 @@ import TransactionList from './components/TransactionList.vue';
 import AddTransaction from './components/AddTransaction.vue';
 
 // wrap anything in "ref" to make it reactive
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 
 export interface TransactionType {
 	id: number,
@@ -40,12 +40,18 @@ export interface TransactionType {
 	amount: number
 }
 
-const transactions = ref([
-	{ id: 1, text: 'Cash', amount: -400 },
-	{ id: 2, text: 'Pay Check', amount: +800 },
-	{ id: 3, text: 'Food', amount: -370 },
-	{ id: 4, text: 'Auto', amount: -120 },
-])
+enum LocalStorageKey {
+	TRANSACTIONS = 'transactions'
+}
+
+const transactions = ref<TransactionType[]>([])
+
+onMounted(() => {
+	const savedTransactions = JSON.parse(localStorage.getItem(LocalStorageKey.TRANSACTIONS) as string)
+	if (savedTransactions) {
+		transactions.value = savedTransactions
+	}
+})
 
 const toast = ref(false)
 const toastBody = ref('')
@@ -89,6 +95,7 @@ const handleNewTransaction = (newTransaction: Partial<TransactionType>) => {
 		text: newTransaction.text ?? "",
 		amount: newTransaction.amount ?? 0
 	})
+	saveToLocalstorage()
 	toastBody.value = 'Successfully added new transaction'
 	toast.value = true
 }
@@ -96,7 +103,13 @@ const handleNewTransaction = (newTransaction: Partial<TransactionType>) => {
 // handle delete transaction
 const handleDeleteTransaction = (id: number) => {
 	transactions.value = transactions.value.filter((each) => each.id !== id)
+	saveToLocalstorage()
 	toastBody.value = 'Transaction deleted'
 	toast.value = true
+}
+
+// save to localstorage
+const saveToLocalstorage = () => {
+	localStorage.setItem(LocalStorageKey.TRANSACTIONS, JSON.stringify(transactions.value))
 }
 </script>
