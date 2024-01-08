@@ -30,12 +30,18 @@ const amount = ref('')
 const toast = ref(false)
 const toastBody = ref('Both fields must be filled')
 
+const emit = defineEmits(['submitTansaction'])
+
 const onSubmit = () => {
 	if (!text.value || !amount.value) {
 		toast.value = true
 		return
 	}
-	console.log("SUBMIT: ", text.value, amount.value)
+	const newTransaction = {
+		text: text.value,
+		amount: parseFloat(amount.value)
+	}
+	emit('submitTansaction', newTransaction)
 	text.value = ''
 	amount.value = ''
 }

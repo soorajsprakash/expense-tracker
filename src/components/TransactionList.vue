@@ -14,11 +14,8 @@
 
 <script setup lang="ts">
 import { defineProps } from 'vue';
-interface TransactionType {
-	id: number,
-	text: string,
-	amount: number
-}
+import { TransactionType } from '../App.vue';
+
 
 const props = defineProps({
 	transactions: {

@@ -4,15 +4,23 @@
 
 		<v-main class="d-flex align-center justify-center" style="min-height: 300px;">
 			<div class="container">
-				<Balance :total="total"/>
+				<Balance :total="+total"/>
 				<br>
 				<IncomeExpense :income="+income" :expenses="+expenses"/>
 				<br>
 				<TransactionList :transactions="transactions"/>
 				<br>
-				<AddTransaction />
+				<AddTransaction @submitTansaction="handleNewTransaction"/>
 			</div>
 		</v-main>
+		<v-snackbar v-model="toast" timeout="2000" color="green">
+			Successfully added new transaction
+			<template v-slot:actions>
+				<v-btn variant="text" @click="toast = false">
+					x
+				</v-btn>
+			</template>
+		</v-snackbar>
 	</v-layout>
 </template>
 
@@ -26,12 +34,20 @@ import AddTransaction from './components/AddTransaction.vue';
 // wrap anything in "ref" to make it reactive
 import { ref, computed } from 'vue';
 
+export interface TransactionType {
+	id: number,
+	text: string,
+	amount: number
+}
+
 const transactions = ref([
 	{ id: 1, text: 'Cash', amount: -400 },
 	{ id: 2, text: 'Pay Check', amount: +800 },
 	{ id: 3, text: 'Food', amount: -370 },
 	{ id: 4, text: 'Auto', amount: -120 },
 ])
+
+const toast = ref(false)
 
 // get total balancec
 const total = computed(() => {
@@ -60,4 +76,18 @@ const expenses = computed(() => {
 		.toFixed(2)
 })
 
+// generates unique unique ID
+const generateUniqueId = () => {
+	return transactions.value.length + 1
+}
+
+// add new transaction
+const handleNewTransaction = (newTransaction: Partial<TransactionType>) => {
+	transactions.value.push({
+		id: generateUniqueId(),
+		text: newTransaction.text ?? "",
+		amount: newTransaction.amount ?? 0
+	})
+	toast.value = true
+}
 </script>
