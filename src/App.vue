@@ -6,7 +6,7 @@
 			<div class="container">
 				<Balance :total="total"/>
 				<br>
-				<IncomeExpense :income="income" :expenses="expenses"/>
+				<IncomeExpense :income="+income" :expenses="+expenses"/>
 				<br>
 				<TransactionList :transactions="transactions"/>
 				<br>
